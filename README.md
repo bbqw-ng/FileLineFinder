@@ -3,7 +3,10 @@
 
 How to run program
 ---
--
+1. PLEASE RUN THIS PROGRAM IN INTELLIJ IN ORDER TO USE SPOTBUGS AND JACOCO.
+ 
+How to run Static Analysis Tool (Spotbugs) ->
+First you must downlad 
 
 
 
