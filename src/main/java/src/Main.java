@@ -34,6 +34,7 @@ public class Main {
             String newFormattedString = "";
             Stack<String> quoteStack = new Stack<>();
             boolean swap = false;
+            boolean quoted = false;
             for (int i = 0; i < restOfString.length(); i++) {
                 System.out.println(restOfString.charAt(i));
                 if (i + 2 <= restOfString.length() && restOfString.substring(i, i+2).equals("\"\"")) {
@@ -48,6 +49,7 @@ public class Main {
                         } else {
                             quoteStack.pop();
                             swap = false;
+                            quoted = true;
                         }
                     } else {
                         newFormattedString += restOfString.charAt(i);
@@ -56,6 +58,8 @@ public class Main {
             }
             //means there is an unclosed quote
             if (!quoteStack.isEmpty())
+                throw new Exception();
+            else if (!quoted)
                 throw new Exception();
 
             String[] commandSplit = command.split(" ");
