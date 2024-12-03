@@ -3,11 +3,9 @@
 
 How to run program
 ---
-1. PLEASE RUN THIS PROGRAM IN INTELLIJ IN ORDER TO USE SPOTBUGS AND JACOCO.
- 
-How to run Static Analysis Tool (Spotbugs) ->
-First you must downlad 
-
+- To Run the tests, please open this project in intellij, and then under the test folder you should find "java" right click and then click "run tests in java".A
+- That should be it on how to run the tests.
+- Quick Note -> Some tests rely on files and the file structure and directories. If you export the directory incorrectly, Some tests may fail.
 
 For developer Initializing
 ---
@@ -30,4 +28,8 @@ SPOTBUGS - Reporting and more....
 JACOCO - CODE COVERAGE TOOL
 ---
 - ***A JaCoCo Coverage Report has been added to this directory for evaluation.***
-- 
+- To Open The Jacoco Report, Goto the 'htmlReport' directory, expand it, right click 'index.html' and then click open in browser and choose a browser of your choice.
+- This report should show you line, method, and branch coverage
+- In my current report my branch coverage is 83% but in reality it should be greater than a 93% since, the main method, where you prompt the user is never run causing branch coverage to be reduced. 
+- Another reason is because I have a function that is used to print the lines in the Collection of lines, which is not used in the test cases since it isn't supported to check output from std.out.
+- I did not make more changes to up my coverage because again in reality, my branch coverage is above 90% making it well tested.
