@@ -15,7 +15,7 @@ public class Main {
         System.out.println( "--------------------\n");
         while (true) {
             System.out.println("Please type in a command in the form 'find pattern file'");
-            String input = "find rock doodoo";
+            String input = scan.nextLine();
             ArrayList<String> reformatted = reformatCommand(input);
             if (Validator.validateCommand(reformatted)) {
                 ArrayList<String> linesFound = finder.find(reformatted.get(1), reformatted.get(2));
