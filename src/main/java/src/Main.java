@@ -17,8 +17,12 @@ public class Main {
             System.out.println("Please type in a command in the form 'find pattern file'");
             String input = scan.nextLine();
             ArrayList<String> reformatted = reformatCommand(input);
-            ArrayList<String> linesFound = finder.find(reformatted.get(1), reformatted.get(2));
-            printLines(linesFound);
+            if (Validator.validateCommand(reformatted)) {
+                ArrayList<String> linesFound = finder.find(reformatted.get(1), reformatted.get(2));
+                printLines(linesFound);
+            } else {
+                System.out.println("Invalid command format. Please try again.");
+            }
         }
     }
 
