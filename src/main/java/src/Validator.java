@@ -1,9 +1,14 @@
 package src;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class Validator {
     public static final String sampleFilePath = "SampleFiles" + File.separator;
+
+    public static boolean validateCommand(ArrayList<String> commandParts) {
+        return true;
+    }
 
     public static boolean validateFind(String find) {
         return find.equalsIgnoreCase("find");
@@ -16,7 +21,6 @@ public class Validator {
         return false;
     }
 
-    //gets the max length of the longest line in the file.
     private static int determineMaxLengthOfLineInFile(String fileName) {
         File myFile = new File(sampleFilePath + fileName);
         int maxLength = 0;

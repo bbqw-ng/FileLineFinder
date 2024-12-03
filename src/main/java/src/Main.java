@@ -4,6 +4,7 @@ import javax.swing.plaf.synth.SynthTextAreaUI;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Stack;
 
 public class Main {
 
@@ -11,29 +12,63 @@ public class Main {
 
     public static void main(String[] args) {
         Finder finder = new Finder();
-        System.out.println("Enter 'STOP' to stop.\n");
+        System.out.println( "--------------------");
+        System.out.println("Enter 'STOP' to stop.");
+        System.out.println( "--------------------\n");
         while (true) {
-            System.out.println("Enter command name here (find): ");
-            String commandName = scan.nextLine();
-            if (commandName.equalsIgnoreCase("stop")) {
-                System.out.println("System terminating...");
-                System.exit(0);
-            } else {
-                System.out.println("Enter query here: ");
-                String commandQuery = scan.nextLine();
-                System.out.println("Enter file name here: ");
-                String commandFileName = scan.nextLine();
-                if (!Validator.validateFind(commandName)) {
-                    System.out.println("Invalid command name. Please try again.\n");
-                } else if (!Validator.validateFileExists(commandFileName)) {
-                    System.out.println("Invalid file name. Please try again.\n");
-                } else if (!Validator.validateQuery(commandQuery, commandFileName)) {
-                    System.out.println("Invalid query. Please try again.\n");
+            System.out.println("Please type in a command in the form 'find pattern file'");
+            String input = scan.nextLine();
+            System.out.println(reformatCommand(input));
+        }
+    }
+
+    private static ArrayList<String> reformatCommand(String command) {
+        ArrayList<String> components = new ArrayList<>();
+        try {
+            //grabs "find" last character is excluded
+            String findPart = command.substring(0, 4);
+            components.add(findPart);
+
+            String restOfString = command.substring(5);
+
+            String newFormattedString = "";
+            Stack<String> quoteStack = new Stack<>();
+            boolean swap = false;
+            for (int i = 0; i < restOfString.length(); i++) {
+                System.out.println(restOfString.charAt(i));
+                if (i + 2 <= restOfString.length() && restOfString.substring(i, i+2).equals("\"\"")) {
+                    newFormattedString += "\"";
+                    i++;
                 } else {
-                    HashSet<String> lines = finder.find(commandName, commandQuery, commandFileName);
-                    printLines(lines);
+                    if (restOfString.substring(i, i+1).equals("\"")) {
+                        //if false mean opening quote so add, true means need closing quote so pop.
+                        if (!swap) {
+                            quoteStack.add("\"");
+                            swap = true;
+                        } else {
+                            quoteStack.pop();
+                            swap = false;
+                        }
+                    } else {
+                        newFormattedString += restOfString.charAt(i);
+                    }
                 }
             }
+            //means there is an unclosed quote
+            if (!quoteStack.isEmpty())
+                throw new Exception();
+
+            String[] commandSplit = command.split(" ");
+            String fileName = commandSplit[commandSplit.length-1];
+            String pattern = newFormattedString.substring(0,newFormattedString.length()-fileName.length()-1);
+
+            components.add(pattern);
+            components.add(fileName);
+            return components;
+
+        } catch (Exception e) {
+            System.out.println("Invalid command format. Please try again.");
+            return null;
         }
     }
 
