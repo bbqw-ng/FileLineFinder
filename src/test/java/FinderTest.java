@@ -9,7 +9,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class FinderTest {
 
-    private String command;
     private ArrayList<String> commandParts;
     private Finder finder;
     private ArrayList<String> lines;
