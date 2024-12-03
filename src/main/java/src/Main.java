@@ -1,10 +1,8 @@
 package src;
 
 import javax.swing.plaf.synth.SynthTextAreaUI;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Scanner;
-import java.util.Stack;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class Main {
 
@@ -18,15 +16,20 @@ public class Main {
         while (true) {
             System.out.println("Please type in a command in the form 'find pattern file'");
             String input = scan.nextLine();
-            System.out.println(reformatCommand(input));
+            ArrayList<String> reformatted = reformatCommand(input);
+            ArrayList<String> linesFound = finder.find(reformatted.get(1), reformatted.get(2));
+            printLines(linesFound);
         }
     }
 
-    private static ArrayList<String> reformatCommand(String command) {
+    public static ArrayList<String> reformatCommand(String command) {
         ArrayList<String> components = new ArrayList<>();
         try {
             //grabs "find" last character is excluded
             String findPart = command.substring(0, 4);
+            if (!findPart.equals("find")) {
+                throw new Exception();
+            }
             components.add(findPart);
 
             String restOfString = command.substring(5);
@@ -36,7 +39,6 @@ public class Main {
             boolean swap = false;
             boolean quoted = false;
             for (int i = 0; i < restOfString.length(); i++) {
-                System.out.println(restOfString.charAt(i));
                 if (i + 2 <= restOfString.length() && restOfString.substring(i, i+2).equals("\"\"")) {
                     newFormattedString += "\"";
                     i++;
@@ -56,15 +58,17 @@ public class Main {
                     }
                 }
             }
-            //means there is an unclosed quote
-            if (!quoteStack.isEmpty())
-                throw new Exception();
-            else if (!quoted)
-                throw new Exception();
 
             String[] commandSplit = command.split(" ");
             String fileName = commandSplit[commandSplit.length-1];
             String pattern = newFormattedString.substring(0,newFormattedString.length()-fileName.length()-1);
+            String[] splitPattern = pattern.split("");
+            ArrayList<String> checkForSpace = new ArrayList<>(Arrays.asList(splitPattern));
+            //means there is an unclosed quote
+            if (!quoteStack.isEmpty())
+                throw new Exception();
+            else if (!quoted && checkForSpace.contains(" "))
+                throw new Exception();
 
             components.add(pattern);
             components.add(fileName);
@@ -76,8 +80,8 @@ public class Main {
         }
     }
 
-    private static void printLines(HashSet<String> lines) {
-        System.out.println("Printing all lines");
+    private static void printLines(ArrayList<String> lines) {
+        System.out.println("Printing all lines containing pattern:");
         System.out.println("---------------------------------------");
         for (String line: lines) {
             System.out.println(line);
